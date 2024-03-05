@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import * as _ from "lodash";
 
 const links = [
   { name: "Home", href: "/", icon: HomeIcon },
@@ -27,7 +28,7 @@ export default function Navigation() {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          {links.map((link) => {
+          {_.map(links, (link) => {
             const LinkIcon = link.icon;
             return (
               <Link

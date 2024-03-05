@@ -6,6 +6,7 @@ import {
   UnorderedListProps,
 } from "@/app/lib/definitions";
 import Image from "next/image";
+import * as _ from "lodash";
 
 const Heading: React.FC<HeadingProps> = ({ level, children }) => {
   const Tag = `h${level}` as keyof JSX.IntrinsicElements;
@@ -23,9 +24,9 @@ const UnorderedList: React.FC<{ items: UnorderedListProps[] }> = ({
 }) => {
   return (
     <ul className="list-disc list-inside pt-2">
-      {items.map((item, index) => (
-        <ListItem key={index}>{item.children[0].text}</ListItem>
-      ))}
+      {_.map(items, (item, index) => {
+        return <ListItem key={index}>{item.children[0].text}</ListItem>;
+      })}
     </ul>
   );
 };
@@ -33,34 +34,33 @@ const UnorderedList: React.FC<{ items: UnorderedListProps[] }> = ({
 export const ContentRenderer = ({ data }: { data: ContentRenderProps[] }) => {
   return (
     <div>
-      {data &&
-        data.map((item: any, index: number) => {
-          switch (item.type) {
-            case "heading":
-              return (
-                <Heading key={index} level={item.level}>
-                  {item.children[0].text}
-                </Heading>
-              );
-            case "paragraph":
-              return <Paragraph key={index}>{item.children[0].text}</Paragraph>;
-            case "image":
-              return (
-                <Image
-                  key={index}
-                  src={`${process.env.STRAPI_BASE}/uploads/${item.image.hash}${item.image.ext}`}
-                  width={item.image.width}
-                  height={item.image.height}
-                  alt={item.image.alternativeText}
-                  className="pt-6"
-                />
-              );
-            case "list":
-              return <UnorderedList key={index} items={item.children} />;
-            default:
-              return null;
-          }
-        })}
+      {_.map(data, (item: any, index: number) => {
+        switch (item.type) {
+          case "heading":
+            return (
+              <Heading key={index} level={item.level}>
+                {item.children[0].text}
+              </Heading>
+            );
+          case "paragraph":
+            return <Paragraph key={index}>{item.children[0].text}</Paragraph>;
+          case "image":
+            return (
+              <Image
+                key={index}
+                src={`${process.env.STRAPI_BASE}/uploads/${item.image.hash}${item.image.ext}`}
+                width={item.image.width}
+                height={item.image.height}
+                alt={item.image.alternativeText}
+                className="pt-6"
+              />
+            );
+          case "list":
+            return <UnorderedList key={index} items={item.children} />;
+          default:
+            return null;
+        }
+      })}
     </div>
   );
 };
