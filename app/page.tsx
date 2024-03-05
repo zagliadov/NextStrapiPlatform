@@ -2,8 +2,11 @@
 
 export default function Home() {
   return (
-    <main className="">
-      
-    </main>
+    <div>
+      {/* navigation */}
+      {/* body */}
+      {/* footer */}
+      main
+    </div>
   );
 }
