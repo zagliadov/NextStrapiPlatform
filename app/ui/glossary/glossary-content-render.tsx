@@ -45,6 +45,7 @@ export const ContentRenderer = ({ data }: { data: ContentRenderProps[] }) => {
           case "paragraph":
             return <Paragraph key={index}>{item.children[0].text}</Paragraph>;
           case "image":
+            console.log(item.image.hash, item.image.ext, 'image')
             return (
               <Image
                 key={index}

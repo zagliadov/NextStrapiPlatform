@@ -11,11 +11,11 @@ import * as _ from "lodash";
 
 const links = [
   { name: "Home", href: "/", icon: HomeIcon },
-  {
-    name: "Invoices",
-    href: "/invoices",
-    icon: DocumentDuplicateIcon,
-  },
+  // {
+  //   name: "Invoices",
+  //   href: "/invoices",
+  //   icon: DocumentDuplicateIcon,
+  // },
   { name: "Glossary", href: "/glossary", icon: UserGroupIcon },
 ];
 
