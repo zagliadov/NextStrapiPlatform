@@ -1,15 +1,25 @@
+"use client";
+
+import { FC } from "react";
 import { IGlossary } from "@/app/lib/definitions";
-import { fetchGlossary } from "@/app/lib/strapi-actions";
 import * as _ from "lodash";
 import Link from "next/link";
+import useSWR from "swr";
+import { fetcher } from "@/app/lib/helpers";
+import { GlossarySkeleton } from "./skeletons";
 
-export default async function Glossary() {
-  const glossaries: IGlossary[] = await fetchGlossary();
+export const Glossary: FC = () => {
+  const { data: glossaries, isLoading } = useSWR<IGlossary[]>(
+    "api/glossary",
+    fetcher
+  );
 
   // Grouping glossaries by the first letter of the name attribute
   const groupedGlossaries = _.groupBy(glossaries ?? [], (glossary) =>
     glossary.attributes.name.trim()[0].toUpperCase()
   );
+
+  if (isLoading) return <GlossarySkeleton />;
 
   return (
     <div>
@@ -40,4 +50,4 @@ export default async function Glossary() {
       )}
     </div>
   );
-}
+};

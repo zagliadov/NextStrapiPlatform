@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "./ui/Navigation/Navigation";
 import Footer from "./ui/Footer/Footer";
+import CookiesConsent from "./ui/CookieConsent/CookieConsent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className} antialiased`}>
           <Navigation />
+          <CookiesConsent />
           <main className="flex-grow">{children}</main>
           <Footer />
       </body>

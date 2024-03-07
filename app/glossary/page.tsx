@@ -1,5 +1,18 @@
-import Glossary from '@/app/ui/glossary/glossary';
-import GlossaryNav from '@/app/ui/glossary/glossary-nav';
+import { Glossary } from "@/app/ui/Glossary/Glossary";
+import { GlossaryNav } from "@/app/ui/Glossary/GlossaryNav";
+import { Metadata } from "next";
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return {
+    title: `Glossary`,
+    description: "Glossary list item",
+  };
+}
 
 export default function Page() {
   return (
