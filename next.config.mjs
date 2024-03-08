@@ -1,5 +1,17 @@
+import path from "path";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = { fs: false, path: false };
+    }
+
+    config.node = {
+      __dirname: true,
+    };
+
+    return config;
+  },
   env: {
     STRAPI_URL: process.env.STRAPI_URL,
   },

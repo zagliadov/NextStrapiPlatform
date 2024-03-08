@@ -4,7 +4,6 @@ import * as _ from "lodash";
 export const fetcher = (url: string, init?: RequestInit) =>
   fetch(url, init).then((res) => res.json());
 
-
 //************************************************************************ */
 //***************************************************************Strapi */ */
 //************************************************************************ */
@@ -30,10 +29,7 @@ export const safeGetChildrenProperty = (
   return _.get(item, path, defaultValue);
 };
 
-export const safeGetChildren = (
-  item: ContentItem,
-  defaultValue: []
-) => {
+export const safeGetChildren = (item: ContentItem, defaultValue: []) => {
   return _.get(item, STypeKeys.CHILDREN, defaultValue);
 };
 
@@ -73,7 +69,7 @@ export const safeGetListItemsTexts = (
   item: ContentItem,
   defaultValue: string = "Default Text"
 ): string[] => {
-  const children = safeGetChildren(item, [])
+  const children = safeGetChildren(item, []);
   return _.map(children, (listItem) => {
     const text = _.get(
       listItem,

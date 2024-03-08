@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContentRenderer } from "@/app/ui/Glossary/GlossaryContentRender";
 import { GlossaryItemNavigation } from "@/app/ui/Glossary/GlossaryItemNavigation";
+import * as _ from "lodash";
 
 type Props = {
   params: { id: string };
@@ -23,12 +24,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: { params: { id: string } }) {
   const id = Number(params?.id);
   const response = await fetchGlossaryById(id);
-  const { attributes } = response || {};
+  const attributes = _.get(response, 'attributes', {});
 
   if (!attributes) {
     notFound();
   }
-  const { title = "", description = "", firstBase } = attributes;
+
+  const title = _.get(attributes, 'title', '');
+  const description = _.get(attributes, 'description', '');
+  const firstBase = _.get(attributes, 'firstBase', []);
 
   return (
     <div key={`${id}/${title}`} className="flex py-8 text-slate-700 md:px-6">
