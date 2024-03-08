@@ -9,7 +9,7 @@ export const GlossaryNavSkeleton: FC = () => {
       <div className="sticky opacity-40 top-[100px] flex flex-col pt-2">
         {_.map(alphabet, (letter) => {
           return (
-            <div className="flex skeleton mb-1 opacity-80 border-b justify-center p-4 text-lg font-semibold text-slate-700">
+            <div key={letter} className="flex skeleton mb-1 opacity-80 border-b justify-center p-4 text-lg font-semibold text-slate-700">
               {letter}
             </div>
           );

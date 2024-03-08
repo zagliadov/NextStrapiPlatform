@@ -1,12 +1,19 @@
 import {
-  ContentRenderProps,
+  ContentItem,
+  ContentRendererProps,
   HeadingProps,
   ListItemProps,
   ParagraphProps,
-  UnorderedListProps,
+  STypeKeys,
 } from "@/app/lib/definitions";
 import Image from "next/image";
 import * as _ from "lodash";
+import { FC } from "react";
+import {
+  safeGetChildrenProperty,
+  safeGetImageProperty,
+  safeGetListItemsTexts,
+} from "@/app/lib/helpers";
 
 const Heading: React.FC<HeadingProps> = ({ level, children, id }) => {
   const Tag = `h${level}` as keyof JSX.IntrinsicElements;
@@ -23,48 +30,69 @@ const Paragraph: React.FC<ParagraphProps> = ({ children }) => (
 
 const ListItem: React.FC<ListItemProps> = ({ children }) => <li>{children}</li>;
 
-const UnorderedList: React.FC<{ items: UnorderedListProps[] }> = ({
-  items,
-}) => {
+interface IUnorderedListProps {
+  items: string[];
+}
+const UnorderedList: React.FC<IUnorderedListProps> = ({ items }) => {
   return (
     <ul className="list-disc list-inside pt-2">
       {_.map(items, (item, index) => {
-        return <ListItem key={index}>{item.children[0].text}</ListItem>;
+        return <ListItem key={index}>{item}</ListItem>;
       })}
     </ul>
   );
 };
 
-export const ContentRenderer = ({ data }: { data: ContentRenderProps[] }) => {
+export const ContentRenderer: FC<ContentRendererProps> = ({ data }) => {
   return (
     <div>
-      {_.map(data, (item: any, index: number) => {
-        switch (item.type) {
+      {_.map(data, (item, index) => {
+        switch (item[STypeKeys.TYPE]) {
           case "heading":
+            const headingText = safeGetChildrenProperty(
+              item,
+              STypeKeys.TEXT,
+              "Default Heading Text"
+            );
+            const itemLevel = _.get(item, STypeKeys.LEVEL, 0);
             return (
-              <Heading
-                key={index}
-                level={item.level}
-                id={item?.children[0].text}
-              >
-                {item?.children[0].text}
+              <Heading key={index} level={itemLevel} id={headingText}>
+                {headingText}
               </Heading>
             );
           case "paragraph":
-            return <Paragraph key={index}>{item?.children[0].text}</Paragraph>;
+            const paragraphText = safeGetChildrenProperty(
+              item,
+              STypeKeys.TEXT,
+              "Default Paragraph Text"
+            );
+            return <Paragraph key={index}>{paragraphText}</Paragraph>;
           case "image":
+            const altText = safeGetImageProperty(
+              item,
+              STypeKeys.ALT_TEXT,
+              "Default Alternative Text"
+            );
+            const itemHash = safeGetImageProperty(item, STypeKeys.HASH);
+            const itemExt = safeGetImageProperty(item, STypeKeys.EXT);
+            const itemImageWidth = safeGetImageProperty(item, STypeKeys.WIDTH);
+            const itemImageHeight = safeGetImageProperty(
+              item,
+              STypeKeys.HEIGHT
+            );
             return (
               <Image
                 key={index}
-                src={`${process.env.STRAPI_BASE}/uploads/${item?.image?.hash}${item?.image?.ext}`}
-                width={item?.image?.width}
-                height={item?.image?.height}
-                alt={item?.image?.alternativeText}
+                src={`${process.env.STRAPI_BASE}/uploads/${itemHash}${itemExt}`}
+                width={itemImageWidth}
+                height={itemImageHeight}
+                alt={altText}
                 className="pt-6"
               />
             );
           case "list":
-            return <UnorderedList key={index} items={item?.children} />;
+            const itemChildren = safeGetListItemsTexts(item);
+            return <UnorderedList key={index} items={itemChildren} />;
           default:
             return null;
         }
@@ -73,20 +101,23 @@ export const ContentRenderer = ({ data }: { data: ContentRenderProps[] }) => {
   );
 };
 
-export const NavRenderer = ({ data }: { data: ContentRenderProps[] }) => {
-  console.log(data, "data")
+interface INavRenderedProps {
+  data: ContentItem[];
+}
+export const NavRenderer: FC<INavRenderedProps> = ({ data }) => {
   return (
     <div className="sticky top-[200px] flex flex-col pt-2">
-      {_.map(data, (item: any, index: number) => {
-        switch (item.type) {
+      {_.map(data, (item, index) => {
+        switch (item[STypeKeys.TYPE]) {
           case "heading":
+            const headingText = safeGetChildrenProperty(
+              item,
+              STypeKeys.TEXT,
+              "Default Heading Text"
+            );
             return (
-              <a
-                key={index}
-                href={`#${item?.children[0].text}`}
-                className="py-4"
-              >
-                {item?.children[0].text}
+              <a key={index} href={`#${headingText}`} className="py-4">
+                {headingText}
               </a>
             );
           default:
