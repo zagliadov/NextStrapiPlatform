@@ -25,19 +25,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const id: number = Number(_.get(params, "id", 1));
   const response: ArticleData = await fetchGlossaryById(id);
-  const attributes: ContentItem[] = _.get(response, 'attributes', []);
+  const attributes: ContentItem[] = _.get(response, "attributes", []);
 
   if (!attributes) {
     notFound();
   }
 
-  const title: string = _.get(attributes, 'title', '');
-  const description: string = _.get(attributes, 'description', '');
-  const firstBase: ContentItem[] = _.get(attributes, 'firstBase', []);
+  const title: string = _.get(attributes, "title", "");
+  const description: string = _.get(attributes, "description", "");
+  const firstBase: ContentItem[] = _.get(attributes, "firstBase", []);
 
   return (
-    <div key={`${id}/${title}`} className="flex py-8 text-slate-700 px-4 tablet:px-6">
-      <GlossaryItemNavigation />
+    <div
+      key={`${id}/${title}`}
+      className="flex py-8 text-slate-700 px-4 tablet:px-6"
+    >
+      <div className="tablet:w-4/12">
+        <GlossaryItemNavigation />
+      </div>
       <div className="flex flex-col tablet:w-8/12">
         <div>
           <Link href={`/glossary`}>
@@ -51,9 +56,7 @@ export default async function Page({ params }: Props) {
         <div className="flex rounded-md bg-sky-100 px-6 py-7">
           <p className="text-xl">{description}</p>
         </div>
-        <div>
-          <ContentRenderer data={firstBase} />
-        </div>
+        <ContentRenderer data={firstBase} />
       </div>
     </div>
   );

@@ -9,7 +9,10 @@ export const GlossaryNavSkeleton: FC = () => {
       <div className="sticky opacity-40 top-[100px] flex flex-col pt-2">
         {_.map(alphabet, (letter) => {
           return (
-            <div key={letter} className="flex skeleton mb-1 opacity-80 border-b justify-center p-4 text-lg font-semibold text-slate-700">
+            <div
+              key={letter}
+              className="flex skeleton mb-1 opacity-80 border-b justify-center p-4 text-lg font-semibold text-slate-700"
+            >
               {letter}
             </div>
           );
@@ -37,6 +40,19 @@ export const GlossarySkeleton: FC = () => {
           </div>
         </div>
       ))}
+    </div>
+  );
+};
+
+export const GlossaryItemNavigationSkeleton: FC = () => {
+  return (
+    <div className="sticky top-[210px]">
+      <div className="skeleton w-5/12 h-5"></div>
+      <div className="pl-4">
+        <div className="skeleton w-7/12 h-5 mt-2"></div>
+        <div className="skeleton w-9/12 h-5 mt-2"></div>
+        <div className="skeleton w-6/12 h-5 mt-2"></div>
+      </div>
     </div>
   );
 };
