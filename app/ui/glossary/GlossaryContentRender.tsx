@@ -106,24 +106,32 @@ interface INavRenderedProps {
 }
 export const NavRenderer: FC<INavRenderedProps> = ({ data }) => {
   return (
-    <div className="sticky top-[200px] flex flex-col pt-2">
-      {_.map(data, (item, index) => {
-        switch (item[STypeKeys.TYPE]) {
-          case "heading":
-            const headingText = safeGetChildrenProperty(
-              item,
-              STypeKeys.TEXT,
-              "Default Heading Text"
-            );
-            return (
-              <a key={index} href={`#${headingText}`} className="py-4">
-                {headingText}
-              </a>
-            );
-          default:
-            return null;
-        }
-      })}
+    <div className="sticky top-[200px] pt-2 hidden tablet:flex tablet:flex-col">
+      <span className="font-semibold">What&lsquo;s inside?</span>
+      <ul>
+        {_.map(data, (item, index) => {
+          switch (item[STypeKeys.TYPE]) {
+            case "heading":
+              const headingText = safeGetChildrenProperty(
+                item,
+                STypeKeys.TEXT,
+                "Default Heading Text"
+              );
+              return (
+                <li key={index} className="py-2 pl-4 text-sm list-decimal list-inside">
+                  <a
+                    href={`#${headingText}`}
+                    className="hover:text-slate-400 underline underline-offset-8"
+                  >
+                    {headingText}
+                  </a>
+                </li>
+              );
+            default:
+              return null;
+          }
+        })}
+      </ul>
     </div>
   );
 };

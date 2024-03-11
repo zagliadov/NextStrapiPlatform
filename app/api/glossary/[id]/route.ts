@@ -1,14 +1,15 @@
 import { fetcher } from "@/app/lib/helpers";
-import { IGlossary } from "@/app/lib/definitions";
+import { ApiResponse, STypeKeys } from "@/app/lib/definitions";
+import * as _ from "lodash";
 import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
   { params }: { params: { id: string } }
 ) {
-  const id = params.id;
+  const id: string = _.get(params, STypeKeys.ID, "10");
   try {
-    const response = await fetcher(
+    const response: ApiResponse = await fetcher(
       `${process.env.STRAPI_URL}/glossary-contents/${id}?populate=*`
     );
 

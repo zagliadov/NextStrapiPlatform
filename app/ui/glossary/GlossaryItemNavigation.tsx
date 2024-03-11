@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/app/lib/helpers";
 import { NavRenderer } from "./GlossaryContentRender";
+import * as _ from "lodash";
 
 export const GlossaryItemNavigation: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,8 +13,7 @@ export const GlossaryItemNavigation: FC = () => {
 
   if (isLoading) return null;
 
-  const { attributes } = glossaryItem.data || {};
-  const { firstBase } = attributes || {};
+  const firstBase = _.get(glossaryItem, "data.attributes.firstBase", {});
 
   return (
     <div className="tablet:w-4/12">

@@ -15,9 +15,17 @@ export const Glossary: FC = () => {
   );
 
   // Grouping glossaries by the first letter of the name attribute
-  const groupedGlossaries = _.groupBy(glossaries ?? [], (glossary) =>
-    glossary.attributes.name.trim()[0].toUpperCase()
-  );
+  const groupedGlossaries = _.chain(glossaries)
+    .defaultTo([])
+    .map((glossary) => {
+      const letter = _.get(glossary, "attributes.name", "attribute");
+      return {
+        ...glossary,
+        firstLetter: _.toUpper(_.head(_.trim(letter))),
+      };
+    })
+    .groupBy("firstLetter")
+    .value();
 
   if (isLoading) return <GlossarySkeleton />;
 

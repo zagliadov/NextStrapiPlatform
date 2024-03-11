@@ -38,6 +38,7 @@ export enum STypeKeys {
   HASH = "hash",
   EXT = "ext",
   MIME = "mime",
+  META = "meta",
   PATH = "path",
   SIZE = "size",
   PREVIEW_URL = "previewUrl",
@@ -56,6 +57,21 @@ export enum STypeKeys {
   GLOSSARY = "glossary",
   DATA = "data",
   ATTRIBUTES = "attributes",
+  PAGINATION = "pagination",
+  PAGE = "page",
+  PAGE_SIZE = "pageSize",
+  PAGE_COUNT = "pageCount",
+  TOTAL = "total",
+}
+
+export type Pagination = {
+  [STypeKeys.PAGE]: number;
+  [STypeKeys.PAGE_SIZE]: number;
+  [STypeKeys.PAGE_COUNT]: number;
+  [STypeKeys.TOTAL]: number;
+}
+export type Meta = {
+  [STypeKeys.PAGINATION]: Pagination;
 }
 
 export type HeadingProps = {
@@ -147,7 +163,7 @@ interface ArticleAttributes {
   };
 }
 
-interface ArticleData {
+export interface ArticleData {
   [STypeKeys.ID]: number;
   [STypeKeys.ATTRIBUTES]: ArticleAttributes;
 }
@@ -156,8 +172,8 @@ export enum MTypeKeys {
   META = "meta",
 }
 export interface ApiResponse {
-  [STypeKeys.DATA]: ArticleData;
-  [MTypeKeys.META]: {};
+  [STypeKeys.DATA]: IGlossary[];
+  [MTypeKeys.META]: Meta;
 }
 
 export interface ContentRendererProps {
