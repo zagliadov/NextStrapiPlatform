@@ -1,5 +1,6 @@
 import path from "path";
 /** @type {import('next').NextConfig} */
+const currentDir = path.resolve('.');
 const nextConfig = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -9,6 +10,7 @@ const nextConfig = {
     config.node = {
       __dirname: true,
     };
+    config.resolve.alias['@'] = path.resolve(currentDir);
 
     return config;
   },
